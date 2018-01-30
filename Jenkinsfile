@@ -48,6 +48,13 @@ podTemplate(
                     sh "env | sort"
                 }
             }
+
+            if (env.BRANCH !=~ /master.*/) {
+                println "Not Master"
+            } else {
+                println "${env.BRANCH}"
+            }
+
         }
     }
 }
