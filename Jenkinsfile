@@ -49,8 +49,10 @@ podTemplate(
                 }
             }
 
-            if (env.BRANCH !=~ /master/) {
-                println "Not Master"
+            println "BRANCH: ${env.BRANCH}"
+
+            if (env.BRANCH != ~/^master.*/) {
+                println "Negated Master"
             } else {
                 println "${env.BRANCH}"
             }
