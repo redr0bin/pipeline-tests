@@ -49,7 +49,9 @@ podTemplate(
                 }
             }
 
-            println "BRANCH: ${env.BRANCH}"
+            if (env.BRANCH == 'master') {
+                println "branch name is master"
+            }
 
             if (env.BRANCH !=~ /master/) {
                 println "branch not contain master"
