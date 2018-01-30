@@ -42,12 +42,12 @@ podTemplate(
             }
         }
 
-        //        withEnv(["REGISTRY=${env.REGISTRY}", "REGISTRY_CREDS=${env.REGISTRY_CREDS}", "TAG=${env.VERSION}", "NAMESPACE=${env.NAMESPACE}", "TARGET_ENV=${env.TARGET_ENV}", "BRANCH=${env.GIT_BRANCH}"]) {
-        stage("Build") {
-            container('build-slave') {
-                sh "env | sort"
+        withEnv(["REGISTRY=${env.REGISTRY}", "REGISTRY_CREDS=${env.REGISTRY_CREDS}", "TAG=${env.VERSION}", "NAMESPACE=${env.NAMESPACE}", "TARGET_ENV=${env.TARGET_ENV}", "BRANCH=${env.GIT_BRANCH}"]) {
+            stage("Build") {
+                container('build-slave') {
+                    sh "env | sort"
+                }
             }
         }
     }
-    //  }
 }
