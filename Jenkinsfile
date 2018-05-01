@@ -36,16 +36,17 @@ podTemplate(
             }
         }
 
-	stage("TEST") {
-	    container('build-slave') {
-	        withEnv(["TAG=${env.VERSION}"]) {
-		    dir("${env.BUILD_DIR}") {
-	        	sh "echo $TAG"
-                        sh "echo -----------------------"
-		        sh "env | sort"
-		    }
-	        }
-	    }
+        withEnv(["GOPATH=${env.WORKSPACE}", "TAG=${env.VERSION}"]) {
+            stage("TEST VAR") {
+                container('build-slave') {
+                    dir("${env.BUILD_DIR}") {
+                        ansiColor('xterm') {
+                            sh "echo $TAG"
+                            sh "env | sort"
+                        }
+                    }
+                }
+            }
         }
     }
 }
