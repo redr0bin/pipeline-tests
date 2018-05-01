@@ -48,7 +48,9 @@ podTemplate(
         }
 
 	stage("TEST") {
-            sh "env | sort"
+		withEnv(["TAG=${env.BRANCH_NAME}"]) {
+	            sh "echo $TAG"
+		}
 	}
     }
 }
