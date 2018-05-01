@@ -39,6 +39,10 @@ podTemplate(
 	stage("TEST") {
 	    withEnv(["TAG=${env.VERSION}"]) {
 	        sh "echo $TAG"
+
+		sh "echo --------------"
+		sh "env | sort"
+		sh "echo --------------"
 	    }
 	}
     }
