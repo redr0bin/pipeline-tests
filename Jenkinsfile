@@ -13,27 +13,27 @@ podTemplate(
         env.REGISTRY_CREDS = "snapshots-registry"
 
         stage("Checkout") {
-            sh "mkdir -p ${env.BUILD_DIR}"
-            dir("${env.BUILD_DIR}") {
-                checkout scm
-            }
-
             container('build-slave') {
-                switch(env.BRANCH_NAME) {
-                    case ~/PR/:
-                        env.VERSION = "${env.BRANCH_NAME}"
-                        break
-                    case ~/develop/:
-                        env.NAMESPACE = "nsb-dev"
-                        env.TARGET_ENV = "dev"
-                        break
-                    case ~/master/:
-                        env.NAMESPACE = "nsb-dev"
-                        env.TARGET_ENV = "dev"
-			env.VERSION = "${env.BRANCH_NAME}-1"
-                        break
-                    default:
-                        break
+                sh "mkdir -p ${env.BUILD_DIR}"
+                dir("${env.BUILD_DIR}") {
+                    checkout scm
+
+                    switch(env.BRANCH_NAME) {
+                        case ~/PR.*/:
+                            env.VERSION = "${env.BRANCH_NAME}"
+                            break
+                        case ~/develop/:
+                            env.NAMESPACE = "nsb-dev"
+                            env.TARGET_ENV = "dev"
+                            break
+                        case ~/master/:
+                            env.NAMESPACE = "nsb-dev"
+                            env.TARGET_ENV = "dev"
+			    env.VERSION = "${env.BRANCH_NAME}-1"
+                            break
+                        default:
+                            break
+                    }
                 }
             }
         }
