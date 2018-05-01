@@ -38,12 +38,16 @@ podTemplate(
 
 	stage("TEST") {
 	    withEnv(["TAG=${env.VERSION}"]) {
-	        sh "echo $TAG"
+		dir("${env.BUILD_DIR}") {
+	            container('build-slave') {
+	        	sh "echo $TAG"
 
-		sh "echo --------------"
-		sh "env | sort"
-		sh "echo --------------"
+		        sh "echo --------------"
+		        sh "env | sort"
+		        sh "echo --------------"
+		    }
+	        }
 	    }
-	}
+        }
     }
 }
