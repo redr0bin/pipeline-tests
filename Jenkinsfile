@@ -8,7 +8,7 @@ podTemplate(
     ]
 ) {
     node('build-pod') {
-        env.BUILD_DIR = "${WORKSPACE}/src/github.com/LiflandGaming/new-sports-book"
+        env.BUILD_DIR = "${WORKSPACE}/src/github.com/LiflandGaming/platform"
         env.REGISTRY = "snapshots.do.optibet.ee"
         env.REGISTRY_CREDS = "snapshots-registry"
 
@@ -21,10 +21,6 @@ podTemplate(
                     case ~/PR/:
                         env.VERSION = "${env.BRANCH_NAME}"
                         break
-                    case ~/task.*|bug.*/:
-                        env.NAMESPACE = "nsb-test"
-                        env.TARGET_ENV = "test"
-                        break
                     case ~/develop/:
                         env.NAMESPACE = "nsb-dev"
                         env.TARGET_ENV = "dev"
@@ -32,14 +28,7 @@ podTemplate(
                     case ~/master/:
                         env.NAMESPACE = "nsb-dev"
                         env.TARGET_ENV = "dev"
-			env.VERSION = "${env.BRANCH_NAME}"
-                        break
-                    case ~/^\d+.\d+.\d/:
-                        env.REGISTRY="release.do.optibet.ee"
-                        env.REGISTRY_CREDS = "release-registry"
-                        env.NAMESPACE = "nsb-stage"
-                        env.TARGET_ENV = "staging"
-                        env.VERSION = "${env.TAG_NAME}"
+			env.VERSION = "${env.BRANCH_NAME}-1"
                         break
                     default:
                         break
@@ -48,9 +37,9 @@ podTemplate(
         }
 
 	stage("TEST") {
-		withEnv(["TAG=${env.BRANCH_NAME}"]) {
-	            sh "echo $TAG"
-		}
+	    withEnv(["TAG=${env.BRANCH_NAME}"]) {
+	        sh "echo $TAG"
+	    }
 	}
     }
 }
