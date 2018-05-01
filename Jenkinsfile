@@ -26,10 +26,10 @@ podTemplate(
                             env.NAMESPACE = "nsb-dev"
                             env.TARGET_ENV = "dev"
                             break
-                        case ~/^\d+.\d+.\d+\$/:
+                        case ~/^\d+.*/:
                             env.NAMESPACE = "nsb-dev"
                             env.TARGET_ENV = "dev"
-			    env.VERSION = "${env.BRANCH_NAME}-1"
+			    env.VERSION = "${env.TAG_NAME}"
                             break
                         default:
                             break
