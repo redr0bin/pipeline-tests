@@ -20,7 +20,7 @@ podTemplate(
 
                 switch(env.BRANCH_NAME) {
                     case ~/PR/:
-                        env.VERSION = "${env.GIT_BRANCH}"
+                        env.VERSION = "${env.BRANCH_NAME}"
                         break
                     case ~/task.*|bug.*/:
                         env.NAMESPACE = "nsb-test"
@@ -30,12 +30,12 @@ podTemplate(
                         env.NAMESPACE = "nsb-dev"
                         env.TARGET_ENV = "dev"
                         break
-                    case ~/^\d.\d.\d/:
+                    case ~/^\d+.\d+.\d/:
                         env.REGISTRY="release.do.optibet.ee"
                         env.REGISTRY_CREDS = "release-registry"
                         env.NAMESPACE = "nsb-stage"
-                        env.TARGET_ENV = "stage"
-                        env.VERSION = "${env.GIT_BRANCH}"
+                        env.TARGET_ENV = "staging"
+                        env.VERSION = "${env.TAG_NAME}"
                         break
                     default:
                         break
@@ -45,7 +45,6 @@ podTemplate(
 
 	stage("TEST") {
             sh "env | sort"
-            println "${env.VERSION}"
 	}
     }
 }
