@@ -37,7 +37,7 @@ podTemplate(
         }
 
 	stage("TEST") {
-	    withEnv(["TAG=${env.BRANCH_NAME}"]) {
+	    withEnv(["TAG=${env.VERSION}"]) {
 	        sh "echo $TAG"
 	    }
 	}
