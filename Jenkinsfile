@@ -11,13 +11,14 @@ podTemplate(
         env.BUILD_DIR = "${WORKSPACE}/src/github.com/LiflandGaming/platform"
         env.REGISTRY = "snapshots.do.optibet.ee"
         env.REGISTRY_CREDS = "snapshots-registry"
+        env.TAG_NAME = "0.12.12"
 
         stage("Checkout") {
                 sh "mkdir -p ${env.BUILD_DIR}"
                 dir("${env.BUILD_DIR}") {
                     checkout scm
 
-                    switch(env.BRANCH_NAME) {
+                    switch(env.TAG_NAME) {
                         case ~/PR.*/:
                             env.VERSION = "${env.BRANCH_NAME}"
                             break
@@ -25,7 +26,7 @@ podTemplate(
                             env.NAMESPACE = "nsb-dev"
                             env.TARGET_ENV = "dev"
                             break
-                        case ~/master/:
+                        case ~/^\d+.\d+.\d+\$/:
                             env.NAMESPACE = "nsb-dev"
                             env.TARGET_ENV = "dev"
 			    env.VERSION = "${env.BRANCH_NAME}-1"
