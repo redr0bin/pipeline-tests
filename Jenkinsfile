@@ -13,7 +13,6 @@ podTemplate(
         env.REGISTRY_CREDS = "snapshots-registry"
 
         stage("Checkout") {
-            container('build-slave') {
                 sh "mkdir -p ${env.BUILD_DIR}"
                 dir("${env.BUILD_DIR}") {
                     checkout scm
@@ -35,7 +34,6 @@ podTemplate(
                             break
                     }
                 }
-            }
         }
 
         stage("TEST VAR") {
