@@ -16,7 +16,9 @@ podTemplate(
             sh "mkdir -p ${env.BUILD_DIR}"
             dir("${env.BUILD_DIR}") {
                 checkout scm
+            }
 
+            container('build-slave') {
                 switch(env.BRANCH_NAME) {
                     case ~/PR/:
                         env.VERSION = "${env.BRANCH_NAME}"
@@ -37,11 +39,13 @@ podTemplate(
         }
 
         stage("TEST VAR") {
-            withEnv(["GOPATH=${env.WORKSPACE}", "TAG=${env.VERSION}"]) {
-                dir("${env.BUILD_DIR}") {
-                    ansiColor('xterm') {
-                        sh "echo $TAG"
-                        sh "env | sort"
+            container('build-slave') {
+                withEnv(["GOPATH=${env.WORKSPACE}", "TAG=${env.VERSION}"]) {
+                    dir("${env.BUILD_DIR}") {
+                        ansiColor('xterm') {
+                            sh "echo $TAG"
+                            sh "env | sort"
+                        }
                     }
                 }
             }
