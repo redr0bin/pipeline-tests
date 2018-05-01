@@ -42,23 +42,8 @@ podTemplate(
             }
         }
 
-        withEnv(["REGISTRY=${env.REGISTRY}", "REGISTRY_CREDS=${env.REGISTRY_CREDS}", "TAG=${env.VERSION}", "NAMESPACE=${env.NAMESPACE}", "TARGET_ENV=${env.TARGET_ENV}", "BRANCH=${env.BRANCH_NAME}"]) {
-            stage("Build") {
-                container('build-slave') {
-                    sh "env | sort"
-                }
-            }
-
-            if (env.BRANCH == 'master') {
-                println "branch name is master"
-            }
-
-            if (env.BRANCH !=~ /master/) {
-                println "branch not contain master"
-            } else {
-                println "Branch: ${env.BRANCH} contains master"
-            }
-
-        }
+	stage("TEST") {
+            sh "env | sort"
+	}
     }
 }
