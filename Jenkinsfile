@@ -11,7 +11,6 @@ podTemplate(
         env.BUILD_DIR = "${WORKSPACE}/src/github.com/LiflandGaming/new-sports-book"
         env.REGISTRY = "snapshots.do.optibet.ee"
         env.REGISTRY_CREDS = "snapshots-registry"
-        env.VERSION = "${BUILD_TIMESTAMP}"
 
         stage("Checkout") {
             sh "mkdir -p ${env.BUILD_DIR}"
@@ -29,6 +28,11 @@ podTemplate(
                     case ~/develop/:
                         env.NAMESPACE = "nsb-dev"
                         env.TARGET_ENV = "dev"
+                        break
+                    case ~/master/:
+                        env.NAMESPACE = "nsb-dev"
+                        env.TARGET_ENV = "dev"
+			env.VERSION = "${env.BRANCH_NAME}"
                         break
                     case ~/^\d+.\d+.\d/:
                         env.REGISTRY="release.do.optibet.ee"
