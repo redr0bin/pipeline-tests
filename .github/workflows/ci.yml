@@ -17,7 +17,7 @@ jobs:
       - name: Set version
         run: |
           SHA="${GITHUB_SHA::8}"
-          BRANCH="${GITHUB_REF#/ref/heads/}"
+          BRANCH="$(echo $i{GITHUB_REF#/ref/heads/})"
           echo "DOCKER_TAG=${BRANCH}-${SHA}" >> $GITHUB_ENV
       - name: Use version
         run: |
