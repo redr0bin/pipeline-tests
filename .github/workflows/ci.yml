@@ -9,6 +9,8 @@ on:
 jobs:  
   test:
     runs-on: ubuntu-latest
-    run: |
-      VERSION="master-${GITHUB_SHA::8}"
-      echo ${VERSION}
+    steps:
+      - uses: actions/checkout@v2    
+        run: |
+          VERSION="master-${GITHUB_SHA::8}"
+          echo ${VERSION}
