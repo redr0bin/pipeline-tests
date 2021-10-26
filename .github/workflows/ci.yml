@@ -20,7 +20,7 @@ jobs:
         id: extract_branch
       - name: Extract short sha
         shell: bash
-        run: echo "##[set-output name=sha;]${GITHUB_REF::8}"
+        run: echo "##[set-output name=sha;]${GITHUB_SHA::8}"
         id: extract_sha
 
       - name: Use version
