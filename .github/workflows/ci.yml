@@ -10,7 +10,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2    
+      - uses: actions/checkout@v2
+      - name: Set version
         run: |
           VERSION="master-${GITHUB_SHA::8}"
           echo ${VERSION}
