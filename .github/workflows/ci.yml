@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
+    if: "github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'skip')"
     steps:
       - uses: actions/checkout@v2
       - name: Extract branch name
