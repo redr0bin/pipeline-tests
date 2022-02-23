@@ -40,3 +40,4 @@ jobs:
           echo '${{ github.event.pull_request }}'
           echo '${{ github.event.pull_request.draft }}'
           echo '${{ github.event.pull_request.labels }}'
+          echo '${{ !contains(github.event.pull_request.labels.*.name, 'skip') }}'
