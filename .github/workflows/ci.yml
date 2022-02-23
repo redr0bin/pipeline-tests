@@ -37,3 +37,6 @@ jobs:
           (github.event.pull_request.draft == true && !contains(github.event.pull_request.labels.*.name, 'skip'))
         run: |
           echo 'Pull Request is in Draft mode'
+          echo '${{ github.event.pull_request }}'
+          echo '${{ github.event.pull_request.draft }}'
+          echo '${{ github.event.pull_request.labels }}'
