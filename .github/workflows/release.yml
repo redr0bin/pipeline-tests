@@ -17,7 +17,7 @@ jobs:
       - name: Generate build ID
         id: source_image
         run: |
-          branch=${GITHUB_REF##*/}
+          branch=master
           sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
           echo "::set-output name=IMAGE_TAG::${branch}-${sha}"
 
