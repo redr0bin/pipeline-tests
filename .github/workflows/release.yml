@@ -13,7 +13,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Echo tag
-        run: echo ${{ github.ref_name }}
+      - name: Lookup source image id
+        id: image_tag
+        run: |
+          branch=master
+          sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
+          echo "::set-output name=IMAGE_TAG::${branch}-${sha}"
+      - name: Tag image
+        run: echo ${{steps.image_tag.outputs.IMAGE_TAG}} 
 
 
