@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  VERSION: "master-${GITHUB_SHA::8}"
-    
-jobs:  
+jobs:
   test:
     runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.draft == true &&
+      !contains(github.event.pull_request.labels.*.name, 'skip')
     steps:
       - uses: actions/checkout@v2
       - name: Extract branch name
@@ -26,3 +26,18 @@ jobs:
       - name: Use version
         run: |
           echo "${{steps.extract_branch.outputs.branch}}-${{steps.extract_sha.outputs.sha}}"
+
+  test-conditions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        if: |
+          github.event.pull_request.draft == false ||
+          (github.event.pull_request.draft == true && !contains(github.event.pull_request.labels.*.name, 'skip'))
+        run: |
+          echo 'Pull Request is in Draft mode'
+          echo '${{ github.event.pull_request }}'
+          echo '${{ github.event.pull_request.draft }}'
+          echo '${{ github.event.pull_request.labels }}'
+          echo '${{ !contains(github.event.pull_request.labels.*.name, 'skip') }}'
