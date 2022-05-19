@@ -32,3 +32,5 @@ jobs:
           name: test
           old_tag: ${{ steps.source_image.outputs.IMAGE_TAG }}
           new_tag: ${{ github.ref_name }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.CR_PAT }}
