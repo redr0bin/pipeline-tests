@@ -2,7 +2,7 @@ name: release
 
 on:
   push:
-    tags: 
+    tags:
     - 'v*.*.*'
 
 jobs:
@@ -13,13 +13,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Lookup source image id
-        id: image_tag
+
+      - name: Generate build ID
+        id: source_image
         run: |
-          branch=master
+          branch=${GITHUB_REF##*/}
           sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
           echo "::set-output name=IMAGE_TAG::${branch}-${sha}"
-      - name: Tag image
-        run: echo ${{steps.image_tag.outputs.IMAGE_TAG}} 
 
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
 
+      - name: Set release tag
+        uses: koraykoska/retag-docker-image@0.2.4
+        with:
+          registry: ghcr.io/redr0bin
+          name: test
+          old_tag: ${{ steps.source_image.outputs.IMAGE_TAG }}
+          new_tag: ${{ github.ref_name }}

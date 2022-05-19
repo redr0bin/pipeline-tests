@@ -8,21 +8,30 @@ on:
 
 env:
   VERSION: "master-${GITHUB_SHA::8}"
-    
-jobs:  
+
+jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      build_id: ${{ steps.build_id.outputs.BUILD_ID }}
     steps:
       - uses: actions/checkout@v2
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: Extract short sha
-        shell: bash
-        run: echo "##[set-output name=sha;]${GITHUB_SHA::8}"
-        id: extract_sha
-
-      - name: Use version
+      - name: Generate build ID
+        id: build_id
         run: |
-          echo "${{steps.extract_branch.outputs.branch}}-${{steps.extract_sha.outputs.sha}}"
+          branch=${GITHUB_REF##*/}
+          sha=${GITHUB_SHA::8}
+          ts=$(date +%s)
+          echo "::set-output name=BUILD_ID::${branch}-${sha}"
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and publish image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: |
+            ghcr.io/redr0bin/test:${{ steps.build_id.outputs.BUILD_ID }}
+          push: true
