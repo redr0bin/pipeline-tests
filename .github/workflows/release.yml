@@ -20,7 +20,7 @@ jobs:
           branch=master
           sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
           token=$(echo $CR_PAT | base64 -w0)
-          source_image=$(curl -s -H "Authorization: Bearer ${token}" https://ghcr.io/v2/gaembla/platform-backoffice/tags/list | jq -c '.tags[] | select(.|test("${sha}"))')
+          source_image=$(curl -s -H "Authorization: Bearer ${token}" https://ghcr.io/v2/redr0bin/test/tags/list | jq -c '.tags[] | select(.|test("${sha}"))')
           echo "::set-output name=IMAGE_TAG::${source_image}"
 
       - name: Set up Docker Buildx
