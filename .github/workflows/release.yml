@@ -19,7 +19,9 @@ jobs:
         run: |
           branch=master
           sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
-          source_image=$(curl -s -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" https://ghcr.io/v2/redr0bin/test/tags/list | jq -r --arg sha ${sha} -c '.tags[] | select(.|test("$sha"))')
+          echo ${sha}
+          source_image=$(curl -s -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" https://ghcr.io/v2/redr0bin/test/tags/list | jq -r --arg sha "${sha}" -c '.tags[] | select(.|test($sha))')
+          echo ${source_image}
           echo "::set-output name=IMAGE_TAG::${source_image}"
 
       - name: Set up Docker Buildx
