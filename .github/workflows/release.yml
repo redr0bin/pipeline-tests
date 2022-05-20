@@ -20,7 +20,8 @@ jobs:
           branch=master
           sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
           echo ${sha}
-          source_image=$(curl -s -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" https://ghcr.io/v2/redr0bin/test/tags/list | jq -r --arg sha "${sha}" -c '.tags[] | select(.|test($sha))')
+          source_image1=$(curl -s -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" https://ghcr.io/v2/redr0bin/test/tags/list | jq -r --arg sha "${sha}" -c '.tags[] | select(.|test($sha))')
+          source_image=$(gh api -H "Accept: application/vnd.github.v3+json" /orgs/redr0bin/packages/container/test/versions | jq -r --arg sha "${sha}" '.[] | select(.metadata.container.tags[] | contains($sha)) | .metadata.container.tags[0]')
           echo ${source_image}
           echo "::set-output name=IMAGE_TAG::${source_image}"
 
