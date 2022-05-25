@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.CR_PAT }}
 
       - name: Fetch source image
-	if: steps.source_image.outcome == 'success'
+	if: ${{ steps.source_image.outputs }} != ""
         run: docker pull ghcr.io/redr0bin/test:${{ steps.source_image.outputs.IMAGE_TAG }}
 
       - name: Tag release image
