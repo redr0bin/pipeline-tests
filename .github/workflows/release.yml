@@ -19,7 +19,8 @@ jobs:
         continue-on-error: true
         run: |
           branch=master
-          sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
+#          sha=$(git rev-list -n 1 ${{ github.ref_name }} | cut -c1-8)
+          sha="test123"
           echo ${sha}
           source_image=$(curl -s -H 'Authorization: Bearer ${{ secrets.GH_PAT}}' -H "Accept: application/vnd.github.v3+json" https://api.github.com/users/redr0bin/packages/container/test/versions | jq -r --arg sha "${sha}" '.[] | select(.metadata.container.tags[] | contains($sha)) | .metadata.container.tags[0]')
           echo ${source_image}
